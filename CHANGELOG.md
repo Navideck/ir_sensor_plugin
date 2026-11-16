@@ -43,3 +43,8 @@
 * Migrate Android Configuration to Namespace thanks to [@rodrigorafaeldamaceno](https://github.com/rodrigorafaeldamaceno) in PR([#8](https://github.com/yeikel16/ir_sensor_plugin/pull/8/files)).
 * Fix deprecated imperative apply of Flutter's Gradle plugins in example.
 * Improve CI-CD using [automated publishing](https://dart.dev/tools/pub/automated-publishing).
+
+## 0.3.2
+
+* Compile against Android API 37 so AGP 9 AAR metadata checks pass.
+* Replace deprecated `lintOptions` with `lint`.

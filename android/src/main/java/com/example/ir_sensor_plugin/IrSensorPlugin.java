@@ -46,15 +46,15 @@ public class IrSensorPlugin implements FlutterPlugin, MethodCallHandler {
                 break;
             case "codeForEmitter":
                 codeForEmitter = call.argument("codeForEmitter");
-                if (codeForEmitter != null) {
-                    transmit(result);
-                }
+                transmit(result);
                 break;
             case "setFrequency":
                 int newFrequency = call.argument("setFrequency");
                 if (newFrequency != frequency) {
                     setFrequency(newFrequency);
                     result.success("Frequency Changed");
+                } else {
+                    result.success("Frequency Unchanged");
                 }
                 break;
             case "transmitListInt":
@@ -113,16 +113,24 @@ public class IrSensorPlugin implements FlutterPlugin, MethodCallHandler {
      */
     private void transmit(Result result) {
         //final int frequency = 38;
-        if (!codeForEmitter.equals("")) {
+        if (!hasIrEmitter()) {
+            result.error("NO_IR_EMITTER", "Device has no infrared emitter", null);
+        } else if (codeForEmitter != null && !codeForEmitter.isEmpty()) {
             mCIR.transmit(frequency, hex2dec(codeForEmitter));
             result.success("Emitting");
+        } else {
+            result.error("EMPTY_PATTERN", "No infrared pattern was provided", null);
         }
     }
 
     private void transmit(Result result, ArrayList<Integer> listInt) {
-        if (!listInt.isEmpty()) {
+        if (!hasIrEmitter()) {
+            result.error("NO_IR_EMITTER", "Device has no infrared emitter", null);
+        } else if (!listInt.isEmpty()) {
             mCIR.transmit(frequency, convertIntegers(listInt));
             result.success("Emitting");
+        } else {
+            result.error("EMPTY_PATTERN", "No infrared pattern was provided", null);
         }
     }
 
@@ -141,7 +149,7 @@ public class IrSensorPlugin implements FlutterPlugin, MethodCallHandler {
      * @return "true" if the device has an infrared emitter, else "false" .
      */
     private boolean hasIrEmitter() {
-        return mCIR.hasIrEmitter();
+        return mCIR != null && mCIR.hasIrEmitter();
     }
 
     /**

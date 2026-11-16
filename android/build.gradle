@@ -6,10 +6,6 @@ buildscript {
         google()
         mavenCentral()
     }
-
-    dependencies {
-        classpath 'com.android.tools.build:gradle:7.2.2'
-    }
 }
 
 rootProject.allprojects {
@@ -23,12 +19,13 @@ apply plugin: 'com.android.library'
 
 android {
     namespace 'com.example.ir_sensor_plugin'
-    compileSdkVersion 31
+    compileSdk 37
 
     defaultConfig {
-        minSdkVersion 19
+        minSdk 19
     }
-    lintOptions {
+
+    lint {
         disable 'InvalidPackage'
     }
 }
